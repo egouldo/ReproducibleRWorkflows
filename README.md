@@ -1,2 +1,3 @@
-# ReproducibleRWorkflows
-Landing page for workshop on reproducible research workflows with R
+# Reproducible Research Workflows with R
+
+Welcome to the landing page for workshop on Reproducible Research Workflows with R.
