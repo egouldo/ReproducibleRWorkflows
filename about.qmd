@@ -1,9 +1,22 @@
 ---
 title: "About"
+about: 
+  template: jolla
+  image: assets/Gould_profile.JPG
+  links:
+    - icon: twitter
+      text: Elliot's twitter
+      href: https://twitter.com/Elliot_Gould_
+    - icon: github
+      text: Elliot's github
+      href: https://github.com/egouldo
+    - icon: orcid
+      href: Elliot's orcid
+      text: https://orcid.org/0000-0002-6585-538X
 ---
 
-About this site
+This workshop and workshop materials is designed by [Elliot Gould](https://github.com/egouldo). You are free to use and adapt these materials with attribution.
 
-```{r}
-1 + 1
-```
+Please cite as follows:
+
+> Gould, E. (2022, 05, 17) *Reproducible Research Workflows with R* INSERT WEBSITE

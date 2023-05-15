@@ -1,11 +1,58 @@
 ---
-title: "ReproducibleRWorkflows"
+title: "Reproducible Workflows with R"
 ---
 
-This is a Quarto website.
+# Pre-work {.pre-work}
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+-   Upgrade or use the most recent versions of R `4.1` / `4.2`
+-   Install the latest version of Rstudio [`v2023.03.1+446` or later](https://www.rstudio.com/products/rstudio/download/#download)
+-   Install the following packages:
+
 
 ```{r}
-1 + 1
+#| eval: false
+
+pkg_list <- c(
+  "tidyverse",
+  "rmarkdown",
+  "knitr"
+)
+install.packages(pkg_list)
 ```
+
+# Workshop Overview
+
+This workshop is designed to introduce users of the R programming language to key principles and practices of reproducible research. You should attend this workshop if you have experience programming in R, and want to learn how to make your analysis code reproducible and transparent.
+
+Some working knowledge of R is assumed, i.e. you know some basic code for cleaning, tidying, manipulating data, can calculate some basic descriptive statistics or other mathematical operations, and you might have fitted and analysed some simple statistical models.
+
+## Learning Objectives
+
+-   **Objective 1:** Appreciate the need for reproducible research
+
+
+
+Appreciate the need for establishing reproducible, make-like workflows and be aware of the basic components of setting up a reproducible analysis using the *targets* package.
+
+-   **Objective 2:** Specify, run and query the outputs of a small data analysis pipeline using the *targets* infrastructure.
+-   **Objective 3:** Troubleshoot and debug a *targets* pipeline so you can apply this knowledge to synthesise *targets* workflows for your own data analyses.
+-   **Objective 4:** Scale up a *targets* pipeline to incorporate more complicated analysis pipelines by:
+    -   using the outputs of a *targets* pipeline in literate programming documents,
+    -   incorporating literate programming documents into the *targets* pipeline, and
+    -   batching and iterating tasks using branching in *targets (IF TIME!!!)*
+
+# Workshop Materials
+
+Note that these materials are designed for a facilitated workshop, but can also be used for self-guided learning.
+
+The format of the workshop is a mixture of presentation and hands-on activities.
+
+1.  [CLONE](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) the participant repo (this contains all the material required for completing activities: [github.com/egouldo/SORTEE_targets_participant](https://github.com/egouldo/SORTEE_targets_participant "https://github.com/egouldo/SORTEE_targets_participant")
+2.  Or, download the repository contents and unzip if you don't use git/github:
+3.  Open the repository `.Rpoject` file in RStudio
+
+::: column-margin
+![Download contents of repository manually from `github.com/egouldo/SORTEE_targets_participant`](materials/images/paste-0FA90D6B.png)
+
+# Useful Resources & References
+:::
