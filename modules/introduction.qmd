@@ -1,0 +1,109 @@
+---
+title: "Reproducible Research with R"
+subtitle: "Introduction & Motivation"
+author: "Elliot Gould"
+format: 
+  revealjs:
+    width: 1920
+    height: 1080
+    slide-number: true
+    theme: simple
+    highlight: pygments
+    touch: false
+    controls: true
+bibliography: ../assets/references.bib
+---
+
+# Activity 1 - 10 minutes
+
+**Planning & Preparation**
+
+-   [ ] Choose a project folder structure
+-   [ ] Choose File Naming Structure
+-   [ ] Choose Coding Style
+-   [ ] **Install & Set Up Version Control System Software**
+-   [ ] **Set up Online Version Control System**
+
+## Download & Install Required Software - R
+
+-   Download & Install most recent versions of R `4.3`:
+-   [R for Windows](https://cran.r-project.org/bin/windows/base/)
+-   [R for Mac](https://cran.r-project.org/bin/macosx/)- ensure you download correct silicon / Intel version
+-   [RStudio's Hands On Programming with R Guide](https://rstudio-education.github.io/hopr/starting.html), if needing more detailed instructions
+-   Download & Install the latest version of Rstudio [`v2023.03.1+446` or later](https://www.rstudio.com/products/rstudio/download/#download)
+-   Open RStudio and install the following packages in R:
+
+```{r}
+#| eval: false
+#| include: true
+#| echo: true
+
+pkg_list <- c(
+  "tidyverse",
+  "rmarkdown",
+  "knitr",
+  "usethis"
+)
+install.packages(pkg_list)
+```
+
+## Download & Install Required Software - git
+
+-   Create a GitHub account at <https://github.com/>, use your University address so you can add the education discount to get more free private repositories!
+
+-   Download and Install git
+
+    -   [git for Windows](https://gitforwindows.org) or [git for Mac](https://sourceforge.net/projects/git-osx-installer/files/)
+    -   Open terminal (Mac) or Command Prompt (windows)
+    -   Type the following to verify git is installed
+
+    ```         
+    $ git version
+    ```
+
+    -   Configure git username and email:
+
+    ```         
+    $ git config --global user.name "First Last"
+    $ git config --global user.email "username@email.com"
+    ```
+
+    -   If on a mac, tell it to remember your password:
+
+    ```         
+    $ git config --global credential.helper osxkeychain
+    ```
+
+::: footer
+[https://github.com/git-guides/install-git](https://github.com/git-guides/install-git)
+:::
+
+## Download & Install Required Software - git
+
+Configure RStudio to use git so it can issue git commands on your behalf, In RStudio:
+
+-   Click *Tools* -\> *Global Options* -\> *Git/SVN*
+-   If Git executable shows (none), click *Browse* and select the git executable installed on your system
+    -   On a Mac, this will likely be one of
+        -   `/usr/bin/git`
+        -   `/usr/local/bin/git`
+        -   `/usr/local/git/bin/git`
+    -   On Windows, `git.exe` will likely be somewhere in `Program Files`
+-   Click Apply
+
+## Download & Install Required Software - git
+
+Now we have told RStudio where git is installed, we can use a special key (SSH RSA) so we don't have to keep typing our password all the time: 
+
+- Click *create RSA key*, and click *Create* in the pop up window. 
+- Click *View public key* 
+- Copy the text in the pop-up window 
+- Go back to GitHub: 
+  - github.com -\> Settings -\> SSH & GPG keys -\> New SSH key 
+  - In the Title for the key, give it any name, I usually pick 'RStudio' or similar 
+  - Paste the key you copied from RStudio into the text box 
+  - Click *Add SSH key*
+
+::: footer
+[https://resources.github.com/github-and-rstudio/](https://resources.github.com/github-and-rstudio/), [https://argoshare.is.ed.ac.uk/healthyr_book/create-an-ssh-rsa-key-and-add-to-your-github-account.html](https://argoshare.is.ed.ac.uk/healthyr_book/create-an-ssh-rsa-key-and-add-to-your-github-account.html)
+:::

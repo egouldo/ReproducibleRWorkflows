@@ -1,0 +1,346 @@
+---
+title: "Module 2: Version Control for the Solo-Researcher with Git & GitHub"
+author: "Elliot Gould"
+format: 
+  revealjs:
+    width: 1920
+    height: 1080
+    slide-number: true
+    theme: simple
+    highlight: pygments
+    touch: false
+    controls: true
+bibliography: ../assets/references.bib
+---
+
+# Why version control?
+
+::: columns
+::: column
+::: fragment
+![Final.doc](../assets/module_2/phdcomics_FINAL.gif)
+:::
+:::
+
+::: column
+::: fragment
+::: incremental
+**Why you should version control:**
+
+-   which is most recent, working version of file?
+-   what is the difference between two versions of a file?
+-   How to revert back to an earlier version of the file you've overwritten?
+:::
+:::
+:::
+:::
+
+::: notes
+As scientists we often engage in version control at one stage of a project or another, without even realising it. Usually this occurs in an informal and haphazard fashion. This often takes the form of multiple revisions of papers codes or datasets being saved duplicate copies with filenames that are uninformative (*draft_1.doc*, *draft_2.doc*, etc., [@Ram:2013] ). "As authors receive new data and feedback from peers and collaborators, maintaining those versions and merging changes can result in an unmanageable pro- liferation of files."
+
+-   When you come back to your project after a few months or a year, how do you know which version of the file is the most recent version?
+-   What is the difference between two different versions of a file? Which lines were changed, and how were they changed? Do you remember the rationale behind two different versions?
+-   What if you made changes and overwrite a file without saving it as a new document? How will you get those changes back if you want them?
+:::
+
+------------------------------------------------------------------------
+
+## What is version control?
+
+::: incremental
+-   Used in software industry, lots of different types, git + github most common
+-   Ability to save different file / project 'versions' during development, with informative comments
+-   Commenting leaves an audit trail for transparently communicating data cleaning and analysis decisions
+-   One 'working version' of all files, no duplicate copies, but previous versions or 'commits' serve as checkpoints which can be reverted to.
+:::
+
+::: notes
+-   A formal version control system (VCS) can help you address these issues, and have long been used in the software industry to manage code.
+-   There are lots of different types of VCS but common to all is the ability to save 'versions' of files during their development alongside informative comments about what you did, known as 'commit messsages'.
+-   This allows you to communicate the decision process of data cleaning or analysis clearly and transparently (BES, 2014). Your version control system can therefore act as a lab notebook, leaving an audit trail for your code.
+-   A version control system allows you to have a snapshot of the project at any one moment ([why use version control guide](https://www.git-tower.com/learn/git/ebook/en/command-line/basics/why-use-version-control)). All past versions are tucked away from your current workspace, inside your version control system. But are still accessible should you need to view them, or rollback any changes.
+-   Every change and accompanying notes are stored independent of the files, which obviates the need for duplicate copies. Only ever one version of a file. Commits serve as checkpoints where individual files or an entire project can be safely reverted to when necessary.
+:::
+
+------------------------------------------------------------------------
+
+## VCS with `git`
+
+::: notes
+Git is one such software system for implementing version control. It runs on your computer locally and works best when tracking files stored as plain text rather than binary files like word documents. Git records the changes you make to your projects files. Storing the entire history of your project locally, also called a 'repository'.
+
+-   Ability to restore previous versions of a file
+-   Understanding what you did and why -\> everytime you save a new version of your project, git requires you to provide a short description of what was changed. If the changes occurred to a text file, including a script containing code, you can see precisely what changed within the file.
+-   Backup -\> ALthough not strictly a backup system in its own right, git can act as a backup, especially when you use GitHub, a cloud-based storage of your project that is version-controlled under git.
+:::
+
+# The basic git workflow:
+
+::: columns
+::: column
+![The Git Workflow: areas and actions to move changes between them](../assets/git_areas.png)
+:::
+
+::: column
+::: incremental
+1.  Create / edit / modify a file inside your repository
+2.  `stage` changes - choose which files, or parts of a file, you want to add to the `staging area`
+3.  `Commit`ting these files takes a permanent snapshot of the file
+
+*Now that the file is committed, it is 'tracked' by git - any any modifications will be noted by git.*
+:::
+:::
+:::
+
+::: notes
+1.  Create / edit / modify a file inside your repository
+2.  Once happy with the changes, you `stage` them in the staging area. You can choose to stage only some of the changes in a file, or you can stage changes in multiple files.
+3.  By `commit`ting those changes, git creates a permanent snapshot of the file in your project's directory. A mandatory part of the 'committing' process is writing an accompanying 'commit message' that outlines what you did to the file.
+
+Once you have committed a file for the first time, it becomes 'tracked', meaning that any time you modify a file, those changes will be picked up by git, and noted in your workspace, waiting for you to choose to stage and commit those changes or discard them.
+:::
+
+::: footer
+From [r-bio.github.io/intro-git-rstudio/](r-bio.github.io/intro-git-rstudio/)
+:::
+
+------------------------------------------------------------------------
+
+## VCSwith GitHub: `git`ting your work into the cloud
+
+::: columns
+::: column
+![](https://cosimameyer.com/images/single-blog/git_flow.png)
+:::
+
+::: column
+::: fragment
+**Additional Workflow Steps**
+
+4.  After `commit`ing changes, the current version of the repository and its history of changes, is `push`ed to the GitHub repository
+5.  If collaborating with others, or you have made changes directly on GitHub, these are `pull`ed or downloaded to your computer.
+:::
+:::
+:::
+
+::: footer
+[https://cosimameyer.com/images/single-blog/git_flow.png](https://cosimameyer.com/images/single-blog/git_flow.png%5D)
+:::
+
+::: notes
+-   While git runs locally on your computer, GitHub is a commercial website that lets you store your git repository for free on the cloud. It's like the dropbox or googledrive for version control, but with additional features. There are other alternatives to GitHub like, GitLab and BitBucket, but GitHub is one of the easiest to master and most widely used.
+-   Using GitHub in addition to running git locally on your computer requires two more additional steps to the workflow:
+
+4.  `Push`ing your changes made on your local computer to GitHub
+5.  If you have made any changes to the GitHub repository on the website, or else you are collaborating with others that have pushed changes to GitHub, you will need to ensure that those changes are downloaded to your computer by `pull`ing them.
+
+*Why add this extra layer of complexity? Storing your repository in the cloud has many benefits, including but not limited to:*
+
+\- Working collaboratively: different collaborators can push their changes to the GitHub repository, and pull any changes that others have made from GitHub to their local computer.
+
+\- It provides a backup of your project and the entire repository
+
+\- You can share your source code and datasets with others, in the spirit of open science.
+:::
+
+# Activity 2: A walkthrough with git and github in RStudio
+
+## Write new function, commit to git, push to GitHub
+
+::: columns
+::: column
+-   Create a new R script, called `se.R`. Write the following inside the script and save it in in the `./R/` folder because it is a function.
+
+```{r}
+#| eval: false
+#| echo: true
+se <- function(x){
+        sqrt(var(x) / length(x))
+}
+```
+
+-   Open up the git tab. Note that There are question marks besides the file because it is not yet known or tracked by git.
+-   When you check the box next to this file, the question marks change to an `A`, indicating that the file has been added to the stage.
+
+This means that we want that file to be a part of the next revision of the project...
+
+The file has not yet been version controlled though, we have simply moved it to the staging area, indicating that we *intend* to add it to the next revision. So we have to `commit` the file.
+:::
+
+::: column
+::: r-stack
+::: {.fragment .fade-in-then-out}
+![Create the file](../assets/module_2/01_create_file.png)
+:::
+
+::: fragment
+![add the file to staging area and review changes](../assets/module_2/02_add_file_review_changes.png)
+:::
+:::
+:::
+:::
+
+## Write new function, commit to git, push to GitHub
+
+![Note the green text appearing in green. This window is the 'diff' window and shows you what exact changes have occurred in the file. Green represents additions, red represents deletions.](../assets/module_2/02_add_file_review_changes.png)
+
+-   hit the commit button, and you will see the review window appear
+-   Enter an informative commit message in the appropriate window. And press 'commit'
+
+> Add function that computes standard error of the mean
+
+A log window will open up letting you know that the commit worked. You will see that the file has been removed from the current workspace in the git pane, because there are no changes that have occurred since the file was last committed.
+
+## Viewing repository History
+
+::: columns
+::: column
+-   Click on the 'History' tab of the Git Pane.
+-   Note the three revisions of the project, with the most recent revision occuring at the top of the list.
+-   Your Commit message is listed for each snapshot or revision. As well as the author and data of the commit.
+-   Each commit also has a SHA hash, which is a string of letters and numbers unique to every commit.
+:::
+
+::: column
+![Viewing project history](../assets/module_2/03_viewing_history.png)
+:::
+:::
+
+## Viewing repository History
+
+::: columns
+::: column
+*Local versus remote repositories*
+
+-   Notice the green label with `HEAD -> refs/heads/master`, and the purple labels with `origin/master` and `origin/head`.
+    -   The green label represents the version of the project open in Rstudio at the moment - i.e. the local version on your computer.
+    -   The purple tags represent the version of the the project as they are in our remote or `origin`, i.e. the repository on GitHub.
+
+Notice that the 'remote' version of the repository is one commit behind the local version. This is because git and GitHub don't automatically sync as do, for example, dropbox.
+:::
+
+::: column
+![Viewing project history](../assets/module_2/03_viewing_history.png)
+:::
+:::
+
+We need to manually merge the changes between the two versions if we would like to keep them in sync. In this instance, we would keep the remote and local repositories in sync by `push`ing our local changes to GitHub, forcing the remote repository to catch up. Before we push our local changes this, we'll make one more local commit.
+
+## Making changes
+
+Modify the `se.R` script to:
+
+```{r}
+#| eval: false
+#| echo: true
+# Standard error function
+se <- function(x)
+  sqrt(var(x, na.rm=TRUE) / length(na.omit(x)))
+```
+
+The file will now appear in the git pane, with the 'M' symbol beside, representing that it has been modified.
+
+![Modifying files](../assets/module_2/04_making_changes.png)
+
+Select the checkbox to stage the file, the M now moves position, indicating that it has been staged for committing. Write the following commit message, and commit the file.
+
+```         
+Modify se function to ignore NA values.
+```
+
+## Pushing to GitHub
+
+1.  View the history of the file in RStudio.
+
+2.  Go to GitHub and view the repository, click on '2 commits' to view the history of the repository
+
+3.  You will see that the last two commits you just made including the addition and modification of the `se.R` file are not reflected in the repository. This is because we havent sent those changes back to GitHub yet.
+
+4.  Go back to the Git pane in RStudio, and click the `push` button. You will see another log message telling you that the changes have been pushed to the address of the GitHub repository.
+
+5.  Now go back to GitHub and view your change. 
+
+![Your GitHub repository should now be in sync with your local repository](images/Screenshot%202023-05-18%20at%201.17.03%20am.png)
+
+
+## Pulling from GitHub
+
+Pulling is useful when changes have been made to the online repository perhaps by someone else, or by yourself within GitHub (useful when working away from your main computer where the repository is stored).
+
+We are going to update the README on GitHub itself.
+
+1.   Click on the README.md file in the list of files within the repository home page on GitHub.
+2.   Click on the pen icon to open the file editor.
+3.   Edit and Paste the text below into the README file.
+
+```
+# Reproducible Research with R
+
+<WRITE YOUR NAME>, <INSERT DATE>
+
+This is a repository for practicing reproducible research workflows with R.
+
+`./data/bat_dat.csv` was downloaded from [https://gist.github.com/egouldo/393c8bf6f38c337cdadc7abe9aa7ca24](https://gist.github.com/egouldo/393c8bf6f38c337cdadc7abe9aa7ca24) and comes from the following paper:
+
+> Straka, T. M., Lentini, P. E., Lumsden, L. F., Wintle, B. A., & Ree, R. (2016). Urban bat communities are affected by wetland size, quality, and pollution levels. Ecology and Evolution, 6(14), 4761-4774.
+
+
+```
+
+4.   Scroll down to the bottom of the screen. Write an informative commit message, such as: `Add notes on good README contents` Hit 'Commit changes', selecting 'commit directly to the `master` branch.
+
+![Using GitHub to make and commit changes](../assets/module_2/06_committing_within_GitHub.png)
+
+5.  Hit the commit button and and return back to your repository's home page. Notice the last commit message has appeared next to the README file in the file list.
+
+6.  Return to RStudio. Remember that you need to manually obtain these changes from the GitHub repository. Do so by hitting 'Pull' inside the Git pane. Your local and GitHub repositories will now be in sync.
+
+# Git Philosophies
+
+:::columns
+:::column
+1.  Commit Early, Commit Often.
+
+Making infrequent commits with numerous changes defeats the purpose of having a proper VCS.
+
+> Commit changes to one file at a time
+
+- Ensures thorough documentation of changes, keeping the your data analysis pathway transparent and clear to yourself and to others. 
+- makes reverting back to previous revisions of the project a lot easier
+
+*Note that there are ways to do restore only part of a revision without reverting the whole project back to that state (hint: search for 'cherry-picking'), however it is tedious to do so, and better to avoid getting into this situation in the first place.*
+:::
+
+:::column
+
+2.  Good, informative commit messages
+
+- Your git repository acts much like a lab notebook or research log. 
+- Informative messages make it easy for you to pick up your project after some time away, and for collaborators to easily jump on board. 
+-  good commit messages aid in identifying exactly where you might need to roll back your project to if you would like to undo some changes or mistakes.
+
+:::
+:::
+
+# Advanced git features - Collaborating with others
+
+We have been running through a workflow for the solo-analyst. But there are some particular rules you need to follow for when you are working on someone else's repository. Here is a good walkthrough of this: [intro to git in RStudio, at Nice R code](http://r-bio.github.io/intro-git-rstudio/).
+
+## Branches
+
+Although branches are an advanced feature of git and we have not been using them here. It is worth knowing a little about what they are.
+
+Branching duplicates the existing repository at a particular point, and allows you to develop new features or experiment without changing the main or the `main` version or branch of the project. If you like the modifications you have made, you can merge these back into the project's `main` branch. Any time you create a new repository, a single `main` branch is created. And all your commits go here unless you explicitly create new branches.
+
+![https://www.atlassian.com/git/tutorials/using-branches](../assets/module_2/hero.svg)
+
+## Branches
+
+![Remember the purple tags represented the version of the remote repository, and the green tags represented the version of the local repository? Now we will have a look at the specific contents of each of these tags.](../assets/module_2/03_viewing_history.png)
+- `main` refers to the main branch. i.e. the main version of the project. 
+- Any other branches represent developmental work such that you can experiment without affecting the `main` branch. Note that we only have master branches on both our local and remote repositories here. 
+- `HEAD` is the 'current branch'. Any commits you make will go to the `HEAD` branch. When you switch branches, the `HEAD` revision will switch to the tip of that branch, and any commits will go to that branch.
+
+Examine the tag contents again. Notice that because our local and remote repositories only have a single, master branch, the `HEAD` tag also occurs on each `master` branch.
+
+# References

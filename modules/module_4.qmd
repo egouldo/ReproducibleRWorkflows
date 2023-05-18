@@ -1,0 +1,276 @@
+---
+title: "Module 4: Data Import"
+author: "Elliot Gould"
+format: 
+  revealjs:
+    width: 1920
+    height: 1080
+    slide-number: true
+    theme: simple
+    highlight: pygments
+    touch: false
+    controls: true
+bibliography: ../assets/references.bib
+---
+
+## Storing data and adding it to your project
+
+```{r include = FALSE, eval = TRUE}
+library(tidyverse)
+```
+
+*Rectangular, text-files*
+
+We will focus on how to read plain-text rectangular files into R. Non-proprietry formats, such as plain-text files are best used for recording and storing field or other data because they can be used by anyone, without need of special software to view or edit them (British Ecological Society, 2014). Common file extensions include `.txt` or `.CSV` files. CSV stands for Comma Separated Value files. These are simply plain-text files with each line representing a row in the tabular data, and each value being separated by a comma.
+
+One added benefit of using text-files to store data, is that we can put them under version control. Let's do this now.
+
+## Challenge 4: add some new data to a project directory (1-minute)
+
+> 1. If you didn't already in module 1, go to the [workshop repository data folder](https://github.com/egouldo/VicBioCon17_data_wrangling/tree/master/data) and download the csv files called `bat_dat.csv`
+> 2. Save them to your data folder
+> 3. Commit the files in git and push to GitHub
+
+::: footer
+*A note on creating CSV Files with your own data*
+
+You can transcribe data you have collected into a CSV file using Microsoft Excel or in open-source CSV editors, such as [comma chameleon ](http://comma-chameleon.io). Existing Microsoft Excel spreadsheets can also be converted into `CSV` files. See the tidy data module for tips on how best to format and structure your data.
+:::
+
+## Importing your data into R
+
+The [`readr` package](http://r4ds.had.co.nz/data-import.html) comes with a selection of tools for importing data into R, turning flat files into R dataframes. For importing other non-CSV flat-file types, check the `readr::` package documentation. The function `readr::read_csv()` reads in CSV files. For those familiar with R, the `read_csv()` function is very similar to base Rs `read.csv()`. Here are some reasons to use `readr` to import your flat-files:
+
+- `readr::` functions are about 10x faster than their base equivalents, and you can set a progress bar for importing larger files.
+- `readr::` functions produce tibbles and are more careful in how files are imported: character vectors will not be coerced to factors, row names are not used, and column names will not be muddled.
+
+Lets import the bat data into R using `read_csv()`
+
+```{r read_csv-example, echo = TRUE}
+readr::read_csv(here::here("data/bat_dat.csv"))
+```
+
+Notice that `readr` prints out the column specification, giving the name and type of each column. This is important for ensuring that the values in a particular column have been read as the right data type. You can manually change the data type if it is read in as the wrong type.
+
+## Tweaking `read_csv()`
+
+- You can control many different aspects of data import using the many arguments of `read_csv()`, try `?read_csv` in your console.
+- `read_csv()` uses the first line of data as the data frame's column names. Sometimes you might have metadata in the first few lines, perhaps as a YAML header or as commented lines (using `#`), other times you might be missing column names in your CSV file. 
+
+::: notes
+Often we deal in data collected and given to us by other people, perhaps a consultant or research assistant collected your data. This removes a lot of control over the way the data is formatted. Sometimes people do funny things, like use strange character strings to represent missing values (pro-tip: `NA` is good). If our data comes from a machine in the lab, like a PCR machine log, it might provide metadata or other details about the nature of the collected data. 
+:::
+
+:::{.r-stack}
+:::{.fragment .fade-in-then-out}
+Skipping Comments:
+
+```{r skipping-comments, echo = TRUE, eval=FALSE}
+readr::read_csv(here::here("data/bat_dat.csv"),  comment = "#")
+```
+
+Skipping a specified number of lines:
+
+```{r skip-lines, echo = TRUE, eval=FALSE}
+readr::read_csv(here::here("data/bat_dat.csv"),  skip = 18)
+```
+:::
+:::{.fragment .fade-in-then-out}
+
+Or pass a character vector to `col_names`:
+```{r provide-colnames, echo = TRUE}
+readr::read_csv("A,2,30\nB,5,60", 
+         col_names = c("site", "native_grass_species", "total_percent_cover")) # c() or concatenate creates a vector
+```
+:::
+:::{.fragment .fade-in}
+Specifying Missing Values with characters other than `NA`
+
+```{r non-standard-NAs}
+readr::read_csv("site,native_reptile_species, mean_weight_g\nA,5,50\nB,0,.",
+         na = ".")
+
+```
+:::
+:::
+
+
+# *Challenge 5: load data into R (2-minutes)*
+
+> 1. Return to the script  `01_tidy_data.R` and edit it to import data into your R workspace using readr. Don't forget to assign it to an informatively named object.
+> 2. Source the script to load the data into R's workspace.
+> 3. Commit to git, push to GitHub.
+
+```{r}
+#| label: read-bat-dat-answer
+#| code-fold: true
+#| echo: true
+#| code-summary: "Answer"
+bat_dat <- readr::read_csv(here::here("data/bat_dat.csv"))
+```
+
+## Parsing column type specification
+
+- `readr` will automatically detect the type of values for each column (take a look back at the output from when we read in the bat and iris datasets). 
+- However, sometimes we would like to override the default options and provide more specialised types of data.
+
+
+*We can specify column types using the `col_types` argument*
+
+Values for the `Season` variable in `bat_dat` were entered using integers. `readr` consequently read them in as integers, but in actuality this variable should be a factor, because the values represent categories or classes rather than true counts.
+
+```{r}
+#| echo: true
+#| eval: true
+bat_dat <- readr::read_csv(here::here("data/bat_dat.csv"), 
+                           col_types = readr::cols(
+                                   Season = readr::col_factor(),
+                                   Habitat = readr::col_factor()
+                           ))
+```
+
+:::footer
+For a full list of the column type options, see the column type help page in the readr package documentation `vignette("column-types", package = "readr")`.
+:::
+
+::: notes
+If any unexpected values occur that don't match your specification, `readr` will tell you which row, column, and what the exact problem is for that value. This is a really good way of ensuring that there are no erroneous values within your dataset, perhaps introduced by transcription error.
+
+Because readr inspects only the first 1000 rows to guess the data type, it is not always perfect. This is another reason to manually supply column types during import. It is good practice to supply column types upon import, that way you can ensure that your import code is consistent and reproducible. 
+
+However, sometimes it might be unreasonable to supply column types, for example when you have species names as the values or observations in a column. In that instance it is worth modifying the variable after import.
+:::
+
+## *Challenge 6: parsing column type specification (5 mins)*
+
+> 1. Edit your data import command from the previous challenge, so that you supply column types for the the columns:
+
+```
+Habitat == factor, levels: 0, 1
+Season == factor, levels: 1,2
+Bioregion == factor, levels: 1 to 4, NA.
+```
+> 2. Hint: you can call `dplyr::distinct(bat_dat, Season)` to show the unique values for the Season column. Repeat for each variable independently to check what levels to supply to the `col_factor` argument.
+> 3. Save, commit and push your script changes to GitHub
+> 4. Source the file to update the object in R's workspace.
+
+```{r}
+#| label: factor-parsing-example
+#| code-fold: true
+#| echo: true
+#| code-summary: "Answer"
+#| eval: false
+bat_dat <- readr::read_csv(here::here("data/bat_dat.csv"), 
+                           col_types = readr::cols(
+                             Season = readr::col_factor(),
+                             Habitat = readr::col_factor(),
+                             Bioregion = readr::col_factor()
+                           ))
+bat_dat
+```
+
+```{r lod-bat-dat, echo=FALSE, eval=TRUE, include=FALSE}
+bat_dat <- readr::read_csv(here::here("data/bat_dat.csv"))
+```
+
+## Writing CSV Files
+
+- You can write your dataframes as CSV files using the `write_csv()` function. 
+- A good point in your data analysis cycle to save your dataframes as CSV's is once you have completed cleaning and tidying your data. 
+- Remember from the [project management module](./01_project_management_scaffolding.Rmd), that any modifications to the data set should not be over-written on the original data file. - You should save any modifications in a new file in your .`/outputs/` directory.
+
+```{r write-csv, eval = FALSE, echo = TRUE}
+data("iris") # load example dataset
+write_csv(x = iris, path = here::here("./output/iris.csv"))
+```
+
+## Overviewing your imported data
+
+*Printing in the console*
+
+Looking at your data frame in the console often clogs your console, and doesn't tell you much about the type of data in each column. The column names might often be obscured. If your console is completely clogged by a dataframe with many rows, you might not even be able to see the first few rows.
+
+```{r}
+print(bat_dat)
+```
+
+*Getting a glimpse of your data*
+
+Dplyr's `glimpse()` function yields an information dense summary of tbl data, and is particularly handy when you have many variables in your dataset.
+
+```{r glimpse}
+dplyr::glimpse(bat_dat)
+```
+
+*Viewing your data*
+
+- The base utilities `View()` function allows you to navigate your data within RStudio in a spread-sheet like format.
+- You can sort or order your your rows on a particular variable, by hitting the up or down arrow on each column heading. 
+- You can also filter rows based on ranges for one or more variables. 
+- This functionality is great for building a mental-picture of your data, and for checking on the outputs of your code as you go about wrangling your data. 
+
+::: notes
+Once your data has been imported into R, it's useful to examine it to firstly get a sense of your data, and secondly to aid in diagnosing any inaccuracies that might have occurred either during data capture, data transcription from hard to digital, if your field data was recorded on paper, or perhaps there was an error during the import of the data into R (sometimes R can convert your column to the wrong 'type' e.g. a character instead of numeric value). Overviewing your data after import is simple yet critical task and should take place before any data wrangling or analysis - it could potentially save future-you much time down and heartache down the track.
+:::
+
+## *Challenge 7 (interactive)*
+
+Run each line of code in the console below.
+
+```{r glimpse-2, eval=FALSE, echo=TRUE}
+bat_dat <- readr::read_csv(here::here("data/bat_dat.csv"))
+dplyr::glimpse(bat_dat)
+```
+
+- Only the data that can fit on the screen will be displayed. Note that when printed to the console, `tbl`'s dimensions are printed at the top of the print response, and any variables that do not fit onto the screen are listed at the bottom of the printout. 
+- Importantly the 'type' of each column is displayed in angle brackets: 
+
+- `<int>` for type integer
+- `<dbl>` for doubles, or real numbers
+- `<chr>` for character vectors, or strings
+- `<dttm>` date-times
+- `<lgl>` logical, vectors that contain only `TRUE` or `FALSE`
+- `<fctr>` factors, representing categorical variables with a fixed number of possible values
+- `<date>` date
+
+:::notes
+In programming language, dplyr functions are said not to have 'side-effects', meaning that unless you assign any of your changes to an object, your code is simply printed the console, rather than being saved to the object in R's memory.
+:::
+
+## *Challenge 7 (interactive)*
+
+> Run the following line in your console. 
+
+```{r View, eval=FALSE, echo=TRUE}
+View(iris) # in the popup window sort, order and filter
+```
+> 1. In the pop-up window, try sorting your data on one variable
+> 2. Experiment with filtering on one or more rows.
+
+::: notes
+*interactive vs. scripted work in RStudio*
+
+The functions above are primarily used for working interactively, rather than in a script. Working interactively helps you to build a mental picture of your dataset as you wrangle. It is a good idea to run any code you write in scripts in the console as you progress, testing that it works as you go.
+:::
+
+# A QA check-list for data and some remedies
+
+Below are some questions (non-exhaustive list) to consider in the data cleaning and tidying phase, before proceeding with your analysis questions.
+
+- Check that column data-types are correct, e.g. if a column should contain numeric values, check that there are no non-numeric values
+  - data parsing with `readr` can help against this. 
+-  Do empty cells actually represent missing data, and not mistakes in data entry? Do they indicate that they are empty using the appropriate null values?
+  - Use the `View` function to filter for NA values.
+-  Check for consistency in unit of measurement, naming scheme (e.g., taxonomy, location), etc.
+- correct colnames, missing variables? number of rows, missing observations? 
+  - `print`ing a `tibble` and `glimpse`, and `View`ing your data object are useful ways to check for these. 
+- duplicate entries
+  - call `dplyr::distinct()` on whole dataset, then use the `print()`, `View()` and `glimpse()` functions
+
+## References
+
+[R for Data Science: Data Import with readr](http://r4ds.had.co.nz/data-import.html)
+
+British Ecological Society (2014) A Guide to Data Management in Ecology and Evolution. (ed K. Harrison). British Ecological Society. [online]. Available from: www.britishecologicalsociety.org/publications/journals.
+
+White, E., Baldridge, E., Brym, Z., Locey, K., McGlinn, D., Supp, S. (2013) Nine simple ways to make it easier to (re)use your data. IEE. 6, 1–10.

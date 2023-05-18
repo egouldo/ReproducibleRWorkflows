@@ -1,0 +1,149 @@
+---
+title: "Module 3: A model for doing data science"
+author: "Elliot Gould"
+format: 
+  revealjs:
+    width: 1920
+    height: 1080
+    slide-number: true
+    theme: simple
+    highlight: pygments
+    touch: false
+    controls: true
+bibliography: ../assets/references.bib
+---
+
+# A conceptual framework for data analysis {#data-science-framework}
+
+
+
+Almost all data analysis problems can fit into the following workflow:
+
+```{r}
+#| label: fig-data-science-framework
+#| fig-cap: "A conceptual model of data science by Hadley Wickham. http://r4ds.had.co.nz/diagrams/data-science.png"
+#| echo: false 
+#| fig-width: 20
+knitr::include_graphics(here::here("assets/data-science.png"))
+```
+
+:::notes
+So what is data wrangling and how does it fit into a broader framework of data analysis / or what others might call 'data science'?
+:::
+
+## Data "Wrangling"
+
+```{r}
+#| label: fig-data-science-wrangle
+#| fig-cap: "Collectively, the steps 'import', 'tidy', and 'transform' are known as 'data wrangling,' which can be thought of as all the steps encompassed in the act of getting your data into R in a shape that is ready for visualisation, modelling and communication. https://r4ds.had.co.nz/diagrams/data-science-wrangle.png"
+#| fig-width: 20
+#| echo: false
+knitr::include_graphics(here::here("assets/data-science-wrangle.png"))
+```
+
+:::{.r-stack }
+:::{.fragment .fade-in-then-out}
+
+**1. Import** 
+
+We need to get our data into R to be able to do any analysis on it using R. This involves importing the data, which is usually stored in a file, database, or perhaps on a web-based API. We will focus on using data stored in a text-file of the type `.csv` for this course.
+:::
+:::{.fragment .fade-in-then-out}
+**2. Tidy** 
+
+Tidying our data doesn't simply mean ensuring that there are no errors that might have occurred during the data capture / transcription stage. "Tidy" data means that it is stored with a consistent structure that matches "the semantics of the dataset." We will explore this in more detail later. But for now, tidy data is stored such that each column is a variable, and each row is an 'observation.' Hadley argues that tidy data allows you to focus on understanding your data and dealing with pertinent questions of your data rather than on constantly shaping it.
+:::
+:::{.fragment .fade-in}
+**3. Transform**
+
+Once we have tidy data, we must transform it. Transforming data could include any of the following actions:
+
+- Focusing in on individual observations of interest, such as all observations for a particular response variable, like diversity, at a single transect.
+- Computing summary variables, such as counts, or means. An example of a count variable might be the diversity of some group of target species at a quadrat, like number of different bat species. If we sampled multiple quadrats at a site, perhaps we might like to take the mean and standard deviation of bat diversity across all quadrats to account for any spatial heterogeneity.
+- Creating new variables that are functions of existing variables, perhaps because you wish to change the scale or units of an existing variable.
+:::
+:::
+
+## And the rest
+
+**4. Knowledge Generation: Visualise**
+
+Visualisations can highlight unexpected observations, or new questions about the data. It can also tell you whether you need to collect more or even different data. 
+
+**5. Knowledge Generation: Model**
+
+Modeling requires that our analysis questions are precise before we can choose what and how to model. We are going to skip this step in this workshop. If you wish to learn about modelling, check out  [Hadley's chapter on modelling in R for Data Science](http://r4ds.had.co.nz/model-intro.html).
+
+**6. Communicate**
+
+This is arguably the most important step of data analysis. Today we will be writing our code within Rmarkdown documents, which allow us to mix code and text to tell a bit of a story about bats in urban Melbourne, Victoria, Australia.
+
+**Aren't we forgetting about data capture?**
+
+Yes! This is an important step in dealing with ecological data that is often overlooked in most resources dealing with data science or data-analysis in R. In ecology data is often recorded by hand on field-sheets, and transcribed into a digital copy at a later date. By following the tidy data convention, and other good rules for capturing or collating data, you can minimise the time and difficulty in tidying and cleaning your data before your analysis begins.
+
+
+##  Multiple iterations thorugh the cycle.
+
+Often we have different analysis questions we would like to answer because we are building an understanding of our dataset with different questions, or perhaps using different sets of tools. So stepping through this cycle is not a singular linear iteration through this cycle from start to finish, but rather a messy repetitious cycling through these different steps. For example, we often need to transform our data differently to answer different questions.
+
+Also, we can use modelling and visualisation as our tools to understand our data, but each is complementary in that they have different strengths and weaknesses, so we need to do both. And in doing so, we might need to iterate through the cycle again.
+
+## The 'Tidyverse'
+
+The 'tidyverse' is a collection of packages that share an underlying design philosophy, grammar, and data structures. It consists of a suite of packages, designed to tackle each step of the data science or data analysis workflow. You can install it like so:
+
+```{r}
+#| eval: false
+install.packages("tidyverse")
+```
+
+```{r}
+#| label: fig-tidyverse-pkgs
+#| fig-cap: "Tidyverse packages and their application within the data science workflow. From: https://oliviergimenez.github.io/reproducible-science-workshop/slides/3_dplyr.html#16"
+#| echo: false
+#| fig-width: 10
+knitr::include_graphics(here::here("assets/workflow-pkgs.png"))
+```
+
+::: notes
+We will use `readr` We will tidy and transform our data with `tidyr` and `dplyr` and plot the results with `ggplot2`, and use `knitr` and `rmarkdown` to communicate our results.
+:::
+
+# Challenge 3 (5 mins):
+
+:::columns
+:::column
+**Task 1**
+
+1. Open a new RScript, save it as `01_tidy_data.R` in the root project directory.
+2. Write an informative document title using the comment function (start line with `#` symbol)
+3. Load the tidyverse libraries with `library(tidyverse)` in your script. Don't forget to install the tidyverse package if you haven't already done so.
+4. Save the script, make a commit with a good succinct commit message and push to GitHub.
+:::
+
+:::column
+
+**Task 2**:
+1. Install package `usethis`
+2. Run in the console:
+```{r}
+#| eval: false
+#| echo: true
+usethis::use_description() # creates a DESCRIPTION file
+```
+3. Open the DESCRIPTION file the function just made, and edit your name
+4. Run in the console:
+```{r}
+#| eval: false
+#| echo: true
+usethis::use_mit_license() # creates a LICENSE file
+```
+5. Make TWO separate commits for each file, with commit messages describing each
+:::
+:::
+
+:::footer
+Consolidating your git workflow and gettign setup for running a tidy data analysis
+:::
+
