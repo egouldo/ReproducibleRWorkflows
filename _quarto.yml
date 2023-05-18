@@ -3,11 +3,21 @@ project:
 
 website:
   title: "Reproducible Research Workflows in R"
+  twitter-card:
+    creator: "@Elliot_Gould_"
   navbar:
     left:
       - href: index.qmd
         text: Home
       - about.qmd
+      - text: Slides
+        menu: 
+          - href: modules/introduction.qmd
+            text: Introduction
+          - href: modules/module_1.qmd
+            text: "Project Organisation"
+          - href: modules/module_2.qmd
+            text: "Version Control"
 
 execute:
   freeze: auto

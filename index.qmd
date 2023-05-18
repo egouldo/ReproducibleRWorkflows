@@ -15,7 +15,8 @@ title: "Reproducible Workflows with R"
 pkg_list <- c(
   "tidyverse",
   "rmarkdown",
-  "knitr"
+  "knitr",
+  "usethis"
 )
 install.packages(pkg_list)
 ```
